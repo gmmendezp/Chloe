@@ -19,13 +19,14 @@ public class FacebookEventProvider implements EventProvider{
     private final String appSecret = "3f2841ecec737d54855406328e059ae4";
     private FacebookClient facebookClient = new DefaultFacebookClient(
                 Version.VERSION_2_3);
-    private String redirectUri = "http://54.152.144.85:8080/chloe/events.jsp";
+    private String redirectUri = "";
     
     @Override
-    public String getLoginUrl() {
+    public String getLoginUrl(String redirectUri) {
         ScopeBuilder scopeBuilder = new ScopeBuilder();
         scopeBuilder.addPermission(UserDataPermissions.USER_ABOUT_ME);
         scopeBuilder.addPermission(UserDataPermissions.USER_EVENTS);
+        this.redirectUri = redirectUri;
         String facebookUrl = facebookClient.getLoginDialogUrl(appId,
                 redirectUri, scopeBuilder);
         return facebookUrl;
@@ -51,8 +52,4 @@ public class FacebookEventProvider implements EventProvider{
         }
         return events;
     }
-    
-    public void setRedirectUri(String redirectUri) {
-        this.redirectUri = redirectUri;
-    }   
 }
