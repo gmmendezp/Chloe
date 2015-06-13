@@ -6,6 +6,6 @@
     </head>
     <body>
         <h1>Hello World!</h1>
-        <a href="/login">Login</a>
+        <a href="${pageContext.request.contextPath}/login">Login</a>
     </body>
 </html>
