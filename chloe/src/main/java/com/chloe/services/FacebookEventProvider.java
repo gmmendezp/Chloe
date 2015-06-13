@@ -19,7 +19,7 @@ public class FacebookEventProvider implements EventProvider{
     private final String appSecret = "3f2841ecec737d54855406328e059ae4";
     private FacebookClient facebookClient = new DefaultFacebookClient(
                 Version.VERSION_2_3);
-    private String redirectUri = "http://54.152.144.85:8080/" + "chloe" + "/events";
+    private String redirectUri = "http://localhost:8084/" + "chloe" + "/widget.jsp";
     
     @Override
     public String getLoginUrl() {

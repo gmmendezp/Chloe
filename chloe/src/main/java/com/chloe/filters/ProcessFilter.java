@@ -17,7 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang3.StringUtils;
 
-@WebFilter(filterName = "ProcessFilter", urlPatterns = {"/events"})
+@WebFilter(filterName = "ProcessFilter", urlPatterns = {"/widget.jsp"})
 public class ProcessFilter extends CustomFilter {
     /**
      *
@@ -40,13 +40,11 @@ public class ProcessFilter extends CustomFilter {
             events = eventProvider.getEvents();
 
             EventClassifier sec = new SolrEventClassifier();
-            Collection<String> i = sec.classify(events);
+            Collection<String> items = sec.classify(events);
 
             ItemProvider itemProvider = new BackcountryItemProvider();
-            
-            System.out.println(itemProvider.getItems(i));
-        } else {
-            response.sendRedirect("/login");
-        }
+            request.setAttribute("items", itemProvider.getItems(items));
+        } 
+        chain.doFilter(request, response);
     }
 }
