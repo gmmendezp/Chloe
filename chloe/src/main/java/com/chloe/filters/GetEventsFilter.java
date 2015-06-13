@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang3.StringUtils;
 
-@WebFilter(filterName = "GetEventsFilter", urlPatterns = {"jsp/events"})
+@WebFilter(filterName = "GetEventsFilter", urlPatterns = {"/events.jsp"})
 public class GetEventsFilter extends CustomFilter {
     /**
      *
