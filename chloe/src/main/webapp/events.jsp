@@ -13,6 +13,7 @@
         <title>Eventos</title>
     </head>
     <body>
+        ${events}
     <c:forEach var="event" items="${events}">
         ${event.name}
     </c:forEach>
