@@ -1,24 +1,18 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.chloe.filters;
 
+import com.chloe.entities.Event;
 import com.chloe.services.EventProvider;
 import com.chloe.services.FacebookEventProvider;
 import java.io.IOException;
+import java.util.List;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.apache.commons.lang3.StringUtils;
 
-/**
- *
- * @author Martín
- */
-@WebFilter(filterName = "GetEventsFilter", urlPatterns = {"/events"})
+@WebFilter(filterName = "GetEventsFilter", urlPatterns = {"/events.jsp"})
 public class GetEventsFilter extends CustomFilter {
     /**
      *
@@ -33,6 +27,13 @@ public class GetEventsFilter extends CustomFilter {
     public void doFilter(HttpServletRequest request, HttpServletResponse response,
             FilterChain chain)
             throws IOException, ServletException {
-        
+        String code = request.getParameter("code");
+        if(StringUtils.isNotBlank(code)) {
+            EventProvider eventProvider = new FacebookEventProvider();
+            eventProvider.login(code);
+            List<Event> events = eventProvider.getEvents();
+            request.setAttribute("events",events);
+        }
+        chain.doFilter(request, response);
     }
 }

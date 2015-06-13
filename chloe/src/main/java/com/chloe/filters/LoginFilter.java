@@ -26,7 +26,7 @@ public class LoginFilter extends CustomFilter {
             FilterChain chain)
             throws IOException, ServletException {
         EventProvider eventProvider = new FacebookEventProvider();
-        String loginUrl = eventProvider.login();
+        String loginUrl = eventProvider.getLoginUrl();
         response.sendRedirect(loginUrl);
     }
     
