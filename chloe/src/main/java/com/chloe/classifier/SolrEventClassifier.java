@@ -2,16 +2,14 @@ package com.chloe.classifier;
 
 import com.chloe.config.ChloeConfig;
 import com.chloe.entities.Event;
+import com.chloe.entities.Item;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Set;
 import org.apache.commons.lang3.StringUtils;
 import org.codehaus.jackson.JsonNode;
@@ -24,32 +22,27 @@ public class SolrEventClassifier implements EventClassifier {
     private static final String URL = "http://54.152.144.85:8983/solr/chloe-index/select?q={query}&wt=json&indent=true";
 
     @Override
-    public Set<String> classify(Collection<Event> events) {
+    public void classify(Collection<Event> events) {
         Set<String> keywords = new HashSet<String>();
 
         for (Event event : events) {
             try {
                 String eventName = event.getName();
+                Collection<Item> items = event.getItems();
                 if (!StringUtils.isBlank(eventName)) {
                     String[] tokensArray = StringUtils.split(eventName, " ");
-                    List<String> tokens = new ArrayList<String>();
+                    Set<String> tokens = new HashSet<String>();
                     for(String t : tokensArray) {
                         tokens.add(URLEncoder.encode(t, "UTF-8"));
                     }
-                    keywords.addAll(tokens);
+                    String preparedUrl = URL.replaceAll("\\{query\\}", generateEventQuery(tokens));
+                    System.out.println(String.format("Making request [%s]", preparedUrl));
+                    items.addAll(processClassifierResult(ChloeConfig.getInstance().getRestTemplate().getForObject(preparedUrl, String.class)));
                 }
             } catch (UnsupportedEncodingException ex) {
                 ex.printStackTrace();
             }
-
         }
-        if (!keywords.isEmpty()) {
-            String preparedUrl = URL.replaceAll("\\{query\\}", generateEventQuery(keywords));
-            System.out.println(String.format("Making request [%s]", preparedUrl));
-            return processClassifierResult(ChloeConfig.getInstance().getRestTemplate().getForObject(preparedUrl, String.class));
-        }
-        
-        return Collections.emptySet();
     }
 
     public String generateEventQuery(Set<String> eventNameParts) {
@@ -65,13 +58,13 @@ public class SolrEventClassifier implements EventClassifier {
         return builder.toString();
     }
 
-    public Set<String> processClassifierResult(String resultString) {
+    public Set<Item> processClassifierResult(String resultString) {
         try {
             ObjectNode jsonObject = ChloeConfig.getInstance().getObjectMapper(resultString);
             JsonNode docs = jsonObject.get("response").get("docs");
 
             Iterator<JsonNode> it = docs.iterator();
-            Set<String> result = new HashSet<>();
+            Set<Item> result = new HashSet<>();
 
             while (it.hasNext()) {
                 result.addAll(getItemsFromDoc(it.next()));
@@ -85,13 +78,13 @@ public class SolrEventClassifier implements EventClassifier {
         return null;
     }
 
-    public Collection<String> getItemsFromDoc(JsonNode docs) {
+    public Collection<Item> getItemsFromDoc(JsonNode docs) {
         JsonNode items = docs.get("product");
         Iterator<JsonNode> it = items.iterator();
 
         Collection list = new ArrayList();
         while (it.hasNext()) {
-            list.add(it.next().getTextValue());
+            list.add(new Item(it.next().getTextValue()));
         }
 
         return list;

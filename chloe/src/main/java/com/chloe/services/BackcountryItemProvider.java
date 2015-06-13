@@ -1,14 +1,17 @@
 package com.chloe.services;
 
 import com.chloe.config.ChloeConfig;
+import com.chloe.entities.Event;
 import com.chloe.entities.Item;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.commons.lang3.StringUtils;
@@ -19,17 +22,25 @@ import org.springframework.web.client.RestTemplate;
 public class BackcountryItemProvider implements ItemProvider {
 
     @Override
-    public List<Item> getItems(Collection<String> itemIds) {
+    public void getItems(Collection<Event> events) {
         RestTemplate rt = ChloeConfig.getInstance().getRestTemplate();
         Map<String, String> params = new HashMap<String, String>();
         params.put("site", "bcs");
-        String ids = StringUtils.join(itemIds, ",");
-        String itemsJson = rt.getForObject("http://productapipqa-vip.bcinfra.net:9000/v1/products/" + ids, String.class, params);
-        return getItemsFromJson(itemsJson);
+        for(Event e : events) {
+            Set<String> list = new HashSet<String>();
+            Map<String, Item> map = new HashMap<String, Item>();
+            List<Item> items = e.getItems();
+            for(Item i : items) {
+                list.add(i.getId());
+                map.put(i.getId(), i);
+            }
+            String ids = StringUtils.join(list, ",");
+            String itemsJson = rt.getForObject("http://productapipqa-vip.bcinfra.net:9000/v1/products/" + ids, String.class, params);
+            getItemsFromJson(itemsJson, map);
+        }
     }
 
-    private List<Item> getItemsFromJson(String itemsJson) {
-        List<Item> items = new ArrayList<Item>();
+    private void getItemsFromJson(String itemsJson, Map<String, Item> items) {
         try {
             ObjectNode jsonObject = ChloeConfig.getInstance().getObjectMapper(itemsJson);
             JsonNode products = jsonObject.get("products");
@@ -37,14 +48,17 @@ public class BackcountryItemProvider implements ItemProvider {
             Iterator<JsonNode> it = products.iterator();
             while(it.hasNext()) {
                 JsonNode itemJson = it.next();
-                Item item = new Item(itemJson);
-                items.add(item);
+                if(itemJson.get("id") != null) {
+                    String id = itemJson.get("id").getTextValue();
+                    if(items.containsKey(id)) {
+                        Item i = items.get(id);
+                        i.update(itemJson);
+                    }
+                }
             }
-            return items;
         } catch (IOException ex) {
             Logger.getLogger(BackcountryItemProvider.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return items;
     }
     
     

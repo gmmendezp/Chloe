@@ -24,7 +24,6 @@ public class FacebookEventProvider implements EventProvider{
     @Override
     public String getLoginUrl() {
         ScopeBuilder scopeBuilder = new ScopeBuilder();
-        scopeBuilder.addPermission(UserDataPermissions.USER_ABOUT_ME);
         scopeBuilder.addPermission(UserDataPermissions.USER_EVENTS);
         String facebookUrl = facebookClient.getLoginDialogUrl(appId,
                 redirectUri, scopeBuilder);

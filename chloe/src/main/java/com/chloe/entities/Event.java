@@ -1,9 +1,13 @@
 package com.chloe.entities;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Event {
     private String id;
     private String name;
     private String description;
+    private List<Item> items = new ArrayList<Item>();
 
     public String getId() {
         return id;
@@ -29,16 +33,20 @@ public class Event {
         this.description = description;
     }
 
+    public List<Item> getItems() {
+        return items;
+    }
+
+    public void setItems(List<Item> items) {
+        this.items = items;
+    }
+
     public Event() {
     }
     
-    
-
     public Event(String id, String name, String description) {
         this.id = id;
         this.name = name;
         this.description = description;
     }
-    
-    
 }

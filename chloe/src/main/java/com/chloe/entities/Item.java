@@ -5,12 +5,15 @@ import org.codehaus.jackson.JsonNode;
 
 public class Item {
     
-    private String id;
-    private String title;
-    private String description;
+    private String id = "";
+    private String title = "";
+    private String description = "";
 
-    public Item(JsonNode itemJson) {
-        id = itemJson.get("id").getTextValue();
+    public Item(String id) {
+        this.id = id;
+    }
+    
+    public void update(JsonNode itemJson) {
         title = itemJson.get("title").getTextValue();
         description = itemJson.get("description").getTextValue();
     }

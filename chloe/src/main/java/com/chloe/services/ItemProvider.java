@@ -1,9 +1,9 @@
 package com.chloe.services;
 
-import com.chloe.entities.Item;
+import com.chloe.entities.Event;
 import java.util.Collection;
 
 public interface ItemProvider {
     
-    public Collection<Item> getItems(Collection<String> itemIds);
+    public void getItems(Collection<Event> events);
 }

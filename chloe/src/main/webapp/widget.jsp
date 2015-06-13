@@ -14,8 +14,11 @@
     </head>
     <body>
         <h1>Hello World!</h1>
-    <c:forEach var="item" items="${items}">
-        <c:out value="${item.title}" /><br/>
+    <c:forEach var="event" items="${events}">    
+        <c:forEach var="item" items="${event.items}">
+            <c:out value="${item.title}" /><br/>
+        </c:forEach>
+        <br/><br/>
     </c:forEach>
     </body>
 </html>

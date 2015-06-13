@@ -5,5 +5,5 @@ import java.util.Collection;
 
 public interface EventClassifier {
         
-    public Collection<String> classify(Collection<Event> events);
+    public void classify(Collection<Event> events);
 }

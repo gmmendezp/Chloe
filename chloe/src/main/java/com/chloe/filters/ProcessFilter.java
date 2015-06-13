@@ -40,10 +40,12 @@ public class ProcessFilter extends CustomFilter {
             events = eventProvider.getEvents();
 
             EventClassifier sec = new SolrEventClassifier();
-            Collection<String> items = sec.classify(events);
+            sec.classify(events);
 
             ItemProvider itemProvider = new BackcountryItemProvider();
-            request.setAttribute("items", itemProvider.getItems(items));
+            itemProvider.getItems(events);
+            
+            request.setAttribute("events", events);
         } 
         chain.doFilter(request, response);
     }
