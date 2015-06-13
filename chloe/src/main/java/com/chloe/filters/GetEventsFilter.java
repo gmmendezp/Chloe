@@ -1,9 +1,13 @@
 package com.chloe.filters;
 
 import com.chloe.entities.Event;
+import com.chloe.services.BackcountryItemProvider;
 import com.chloe.services.EventProvider;
 import com.chloe.services.FacebookEventProvider;
+import com.chloe.services.ItemProvider;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -34,6 +38,11 @@ public class GetEventsFilter extends CustomFilter {
             List<Event> events = eventProvider.getEvents();
             request.setAttribute("events",events);
         }
+        ItemProvider itemProvider = new BackcountryItemProvider();
+        List<String> i = new ArrayList<String>();
+        i.add("MET0295");
+        i.add("DMM0028");
+        itemProvider.getItems(i);
         chain.doFilter(request, response);
     }
 }
