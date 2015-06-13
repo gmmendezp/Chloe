@@ -3,12 +3,15 @@ package com.chloe.classifier;
 import com.chloe.config.ChloeConfig;
 import com.chloe.entities.Event;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 import org.apache.commons.lang3.StringUtils;
 import org.codehaus.jackson.JsonNode;
@@ -25,11 +28,18 @@ public class SolrEventClassifier implements EventClassifier {
         Set<String> keywords = new HashSet<String>();
 
         for (Event event : events) {
-
-            String eventName = event.getName();
-            System.out.println(eventName);
-            if (!StringUtils.isBlank(eventName)) {
-                keywords.addAll(Arrays.asList(eventName.split(" ")));
+            try {
+                String eventName = event.getName();
+                if (!StringUtils.isBlank(eventName)) {
+                    String[] tokensArray = StringUtils.split(eventName, " ");
+                    List<String> tokens = new ArrayList<String>();
+                    for(String t : tokensArray) {
+                        tokens.add(URLEncoder.encode(t, "UTF-8"));
+                    }
+                    keywords.addAll(tokens);
+                }
+            } catch (UnsupportedEncodingException ex) {
+                ex.printStackTrace();
             }
 
         }
@@ -43,7 +53,6 @@ public class SolrEventClassifier implements EventClassifier {
     }
 
     public String generateEventQuery(Set<String> eventNameParts) {
-
         StringBuilder builder = new StringBuilder();
 
         for (String eventNamePart : eventNameParts) {
@@ -87,4 +96,5 @@ public class SolrEventClassifier implements EventClassifier {
 
         return list;
     }
+
 }
