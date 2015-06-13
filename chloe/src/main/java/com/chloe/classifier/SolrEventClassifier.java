@@ -23,8 +23,6 @@ public class SolrEventClassifier implements EventClassifier {
 
     @Override
     public void classify(Collection<Event> events) {
-        Set<String> keywords = new HashSet<String>();
-
         for (Event event : events) {
             try {
                 String eventName = event.getName();
@@ -32,7 +30,7 @@ public class SolrEventClassifier implements EventClassifier {
                 if (!StringUtils.isBlank(eventName)) {
                     String[] tokensArray = StringUtils.split(eventName, " ");
                     Set<String> tokens = new HashSet<String>();
-                    for(String t : tokensArray) {
+                    for (String t : tokensArray) {
                         tokens.add(URLEncoder.encode(t, "UTF-8"));
                     }
                     String preparedUrl = URL.replaceAll("\\{query\\}", generateEventQuery(tokens));
@@ -47,14 +45,12 @@ public class SolrEventClassifier implements EventClassifier {
 
     public String generateEventQuery(Set<String> eventNameParts) {
         StringBuilder builder = new StringBuilder();
-
         for (String eventNamePart : eventNameParts) {
             if (!StringUtils.isBlank(builder)) {
                 builder.append(OR);
             }
             builder.append(ACTIVITIES_FIELD.replaceAll("\\{keyword\\}", eventNamePart));
         }
-
         return builder.toString();
     }
 
@@ -62,31 +58,25 @@ public class SolrEventClassifier implements EventClassifier {
         try {
             ObjectNode jsonObject = ChloeConfig.getInstance().getObjectMapper(resultString);
             JsonNode docs = jsonObject.get("response").get("docs");
-
             Iterator<JsonNode> it = docs.iterator();
             Set<Item> result = new HashSet<>();
-
             while (it.hasNext()) {
                 result.addAll(getItemsFromDoc(it.next()));
             }
-
             return result;
         } catch (IOException ex) {
             ex.printStackTrace();
         }
-
         return null;
     }
 
     public Collection<Item> getItemsFromDoc(JsonNode docs) {
         JsonNode items = docs.get("product");
         Iterator<JsonNode> it = items.iterator();
-
         Collection list = new ArrayList();
         while (it.hasNext()) {
             list.add(new Item(it.next().getTextValue()));
         }
-
         return list;
     }
 

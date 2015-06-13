@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Event {
+
     private String id;
     private String name;
     private String description;
@@ -43,7 +44,7 @@ public class Event {
 
     public Event() {
     }
-    
+
     public Event(String id, String name, String description) {
         this.id = id;
         this.name = name;

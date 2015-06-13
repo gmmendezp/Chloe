@@ -4,7 +4,6 @@ import com.chloe.config.ChloeConfig;
 import com.chloe.entities.Event;
 import com.chloe.entities.Item;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -26,16 +25,18 @@ public class BackcountryItemProvider implements ItemProvider {
         RestTemplate rt = ChloeConfig.getInstance().getRestTemplate();
         Map<String, String> params = new HashMap<String, String>();
         params.put("site", "bcs");
-        for(Event e : events) {
+        for (Event e : events) {
             Set<String> list = new HashSet<String>();
             Map<String, Item> map = new HashMap<String, Item>();
             List<Item> items = e.getItems();
-            for(Item i : items) {
+            for (Item i : items) {
                 list.add(i.getId());
                 map.put(i.getId(), i);
             }
             String ids = StringUtils.join(list, ",");
-            String itemsJson = rt.getForObject("http://productapipqa-vip.bcinfra.net:9000/v1/products/" + ids, String.class, params);
+            String itemsJson = rt.getForObject(
+                    "http://productapipqa-vip.bcinfra.net:9000/v1/products/"
+                    + ids, String.class, params);
             getItemsFromJson(itemsJson, map);
         }
     }
@@ -44,13 +45,13 @@ public class BackcountryItemProvider implements ItemProvider {
         try {
             ObjectNode jsonObject = ChloeConfig.getInstance().getObjectMapper(itemsJson);
             JsonNode products = jsonObject.get("products");
-            
+
             Iterator<JsonNode> it = products.iterator();
-            while(it.hasNext()) {
+            while (it.hasNext()) {
                 JsonNode itemJson = it.next();
-                if(itemJson.get("id") != null) {
+                if (itemJson.get("id") != null) {
                     String id = itemJson.get("id").getTextValue();
-                    if(items.containsKey(id)) {
+                    if (items.containsKey(id)) {
                         Item i = items.get(id);
                         i.update(itemJson);
                     }
@@ -60,7 +61,5 @@ public class BackcountryItemProvider implements ItemProvider {
             Logger.getLogger(BackcountryItemProvider.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
-    
-    
+
 }

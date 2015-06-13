@@ -9,7 +9,6 @@ import com.chloe.services.FacebookEventProvider;
 import com.chloe.services.ItemProvider;
 import java.io.IOException;
 import java.util.Collection;
-import java.util.List;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebFilter;
@@ -19,6 +18,7 @@ import org.apache.commons.lang3.StringUtils;
 
 @WebFilter(filterName = "ProcessFilter", urlPatterns = {"/widget.jsp"})
 public class ProcessFilter extends CustomFilter {
+
     /**
      *
      * @param request The servlet request we are processing
@@ -33,8 +33,8 @@ public class ProcessFilter extends CustomFilter {
             FilterChain chain)
             throws IOException, ServletException {
         String code = request.getParameter("code");
-        List<Event> events;
-        if(StringUtils.isNotBlank(code)) {
+        Collection<Event> events;
+        if (StringUtils.isNotBlank(code)) {
             EventProvider eventProvider = new FacebookEventProvider();
             eventProvider.login(code);
             events = eventProvider.getEvents();
@@ -44,9 +44,9 @@ public class ProcessFilter extends CustomFilter {
 
             ItemProvider itemProvider = new BackcountryItemProvider();
             itemProvider.getItems(events);
-            
+
             request.setAttribute("events", events);
-        } 
+        }
         chain.doFilter(request, response);
     }
 }

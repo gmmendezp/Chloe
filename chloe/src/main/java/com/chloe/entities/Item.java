@@ -79,5 +79,4 @@ public class Item {
     public String toString() {
         return "Item{" + "id=" + id + ", title=" + title + ", description=" + description + ", brand=" + brand + ", image=" + image + '}';
     }
-
 }

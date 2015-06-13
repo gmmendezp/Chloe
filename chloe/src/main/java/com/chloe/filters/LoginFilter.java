@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 
 @WebFilter(filterName = "LoginFilter", urlPatterns = {"/login"})
 public class LoginFilter extends CustomFilter {
-    
+
     /**
      *
      * @param request The servlet request we are processing
@@ -29,5 +29,4 @@ public class LoginFilter extends CustomFilter {
         String loginUrl = eventProvider.getLoginUrl();
         response.sendRedirect(loginUrl);
     }
-    
 }

@@ -20,18 +20,15 @@ public class ChloeConfig {
         if (chloeConfig == null) {
             chloeConfig = new ChloeConfig();
         }
-
         return chloeConfig;
     }
 
     public RestTemplate getRestTemplate() {
-
         if (restTemplate == null) {
             restTemplate = new RestTemplate();
             restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
             restTemplate.getMessageConverters().add(new StringHttpMessageConverter());
         }
-
         return restTemplate;
     }
 

@@ -10,7 +10,7 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public abstract class CustomFilter implements Filter{
+public abstract class CustomFilter implements Filter {
 
     private static final boolean debug = true;
 
