@@ -33,11 +33,9 @@ public class BackcountryItemProvider implements ItemProvider {
     private List<Item> getItemsFromJson(String itemsJson) {
         List<Item> items = new ArrayList<Item>();
         try {
-            ObjectMapper mapper = new ObjectMapper();
-            JsonFactory f = new JsonFactory();
-            JsonParser jp = f.createJsonParser(itemsJson);
-            ObjectNode jsonObject = mapper.readValue(jp, ObjectNode.class);
+            ObjectNode jsonObject = ChloeConfig.getInstance().getObjectMapper(itemsJson);
             JsonNode products = jsonObject.get("products");
+            
             Iterator<JsonNode> it = products.iterator();
             while(it.hasNext()) {
                 JsonNode itemJson = it.next();

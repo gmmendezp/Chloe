@@ -1,5 +1,10 @@
 package com.chloe.config;
 
+import java.io.IOException;
+import org.codehaus.jackson.JsonFactory;
+import org.codehaus.jackson.JsonParser;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.node.ObjectNode;
 import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
@@ -31,4 +36,7 @@ public class ChloeConfig {
         return restTemplate;
     }
 
+    public ObjectNode getObjectMapper(String response) throws IOException {
+        return new ObjectMapper().readValue(new JsonFactory().createJsonParser(response), ObjectNode.class);
+    }
 }

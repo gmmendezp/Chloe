@@ -28,4 +28,17 @@ public class Event {
     public void setDescription(String description) {
         this.description = description;
     }
+
+    public Event() {
+    }
+    
+    
+
+    public Event(String id, String name, String description) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+    }
+    
+    
 }
