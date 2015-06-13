@@ -28,7 +28,6 @@ public class GetEventsFilter extends CustomFilter {
             FilterChain chain)
             throws IOException, ServletException {
         String code = request.getParameter("code");
-        System.out.println(code);
         if(StringUtils.isNotBlank(code)) {
             EventProvider eventProvider = new FacebookEventProvider();
             eventProvider.login(code);

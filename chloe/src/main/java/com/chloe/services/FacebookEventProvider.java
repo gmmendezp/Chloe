@@ -47,6 +47,7 @@ public class FacebookEventProvider implements EventProvider{
             event.setId(e.getId());
             event.setDescription(e.getDescription());
             event.setName(e.getName());
+            events.add(event);
         }
         return events;
     }
