@@ -1,5 +1,6 @@
 package com.chloe.filters;
 
+import com.chloe.classifier.EventClassifier;
 import com.chloe.classifier.SolrEventClassifier;
 import com.chloe.entities.Event;
 import com.chloe.services.BackcountryItemProvider;
@@ -38,7 +39,7 @@ public class ProcessFilter extends CustomFilter {
             eventProvider.login(code);
             events = eventProvider.getEvents();
 
-            SolrEventClassifier sec = new SolrEventClassifier();
+            EventClassifier sec = new SolrEventClassifier();
             Collection<String> i = sec.classify(events);
 
             ItemProvider itemProvider = new BackcountryItemProvider();
