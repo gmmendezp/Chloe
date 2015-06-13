@@ -1,13 +1,13 @@
 package com.chloe.filters;
 
+import com.chloe.classifier.SolrEventClassifier;
 import com.chloe.entities.Event;
 import com.chloe.services.BackcountryItemProvider;
 import com.chloe.services.EventProvider;
 import com.chloe.services.FacebookEventProvider;
 import com.chloe.services.ItemProvider;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Collection;
 import java.util.List;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -16,8 +16,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang3.StringUtils;
 
-@WebFilter(filterName = "GetEventsFilter", urlPatterns = {"/events.jsp"})
-public class GetEventsFilter extends CustomFilter {
+@WebFilter(filterName = "ProcessFilter", urlPatterns = {"/events"})
+public class ProcessFilter extends CustomFilter {
     /**
      *
      * @param request The servlet request we are processing
@@ -32,17 +32,20 @@ public class GetEventsFilter extends CustomFilter {
             FilterChain chain)
             throws IOException, ServletException {
         String code = request.getParameter("code");
+        List<Event> events;
         if(StringUtils.isNotBlank(code)) {
             EventProvider eventProvider = new FacebookEventProvider();
             eventProvider.login(code);
-            List<Event> events = eventProvider.getEvents();
-            request.setAttribute("events",events);
+            events = eventProvider.getEvents();
+
+            SolrEventClassifier sec = new SolrEventClassifier();
+            Collection<String> i = sec.classify(events);
+
+            ItemProvider itemProvider = new BackcountryItemProvider();
+            
+            System.out.println(itemProvider.getItems(i));
+        } else {
+            response.sendRedirect("/login");
         }
-        ItemProvider itemProvider = new BackcountryItemProvider();
-        List<String> i = new ArrayList<String>();
-        i.add("MET0295");
-        i.add("DMM0028");
-        itemProvider.getItems(i);
-        chain.doFilter(request, response);
     }
 }

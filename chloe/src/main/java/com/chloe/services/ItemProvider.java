@@ -1,9 +1,9 @@
 package com.chloe.services;
 
 import com.chloe.entities.Item;
-import java.util.List;
+import java.util.Collection;
 
 public interface ItemProvider {
     
-    public List<Item> getItems(List<String> itemIds);
+    public Collection<Item> getItems(Collection<String> itemIds);
 }

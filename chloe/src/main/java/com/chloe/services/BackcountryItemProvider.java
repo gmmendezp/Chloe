@@ -4,6 +4,7 @@ import com.chloe.config.ChloeConfig;
 import com.chloe.entities.Item;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -11,17 +12,14 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.commons.lang3.StringUtils;
-import org.codehaus.jackson.JsonFactory;
 import org.codehaus.jackson.JsonNode;
-import org.codehaus.jackson.JsonParser;
-import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.node.ObjectNode;
 import org.springframework.web.client.RestTemplate;
 
 public class BackcountryItemProvider implements ItemProvider {
 
     @Override
-    public List<Item> getItems(List<String> itemIds) {
+    public List<Item> getItems(Collection<String> itemIds) {
         RestTemplate rt = ChloeConfig.getInstance().getRestTemplate();
         Map<String, String> params = new HashMap<String, String>();
         params.put("site", "bcs");

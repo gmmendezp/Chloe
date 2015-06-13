@@ -2,7 +2,6 @@ package com.chloe.classifier;
 
 import com.chloe.config.ChloeConfig;
 import com.chloe.entities.Event;
-import com.chloe.entities.Item;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -11,12 +10,9 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.apache.commons.lang3.StringUtils;
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.node.ObjectNode;
-import org.springframework.web.client.RestTemplate;
 
 public class SolrEventClassifier implements EventClassifier {
 
@@ -47,6 +43,7 @@ public class SolrEventClassifier implements EventClassifier {
     }
 
     public String generateEventQuery(Set<String> eventNameParts) {
+
         StringBuilder builder = new StringBuilder();
 
         for (String eventNamePart : eventNameParts) {
@@ -90,14 +87,4 @@ public class SolrEventClassifier implements EventClassifier {
 
         return list;
     }
-
-    public static void main(String[] args) {
-        SolrEventClassifier sec = new SolrEventClassifier();
-        Collection<Event> events = new ArrayList<Event>();
-        events.add(new Event("1", "lindora run event", ""));
-        events.add(new Event("2", "climb cerro de la muerte", ""));
-        System.out.println(sec.classify(events));
-
-    }
-
 }
