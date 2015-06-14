@@ -11,7 +11,7 @@ public interface EventClassifier {
 
     /**
      * Hydrate events with product ids
-     * @param events
+     * @param events events from a social network or any other source
      */
     public void classify(Collection<Event> events);
 }

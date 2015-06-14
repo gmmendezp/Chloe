@@ -18,11 +18,11 @@ import org.apache.commons.lang3.StringUtils;
 
 /**
  * Manages the workflow of the app:
- * 1. Receives a verification code/token from the social network
- * 2. Calls the event provider to obtain user events
- * 3. Calls the classifier to obtain product ids according to the events
- * 4. Calls the item/product provider to obtain the product info
- * 5. Sends info to the front end
+ * Receives a verification code/token from the social network.
+ * Calls the event provider to obtain user events.
+ * Calls the classifier to obtain product ids according to the events.
+ * Calls the item/product provider to obtain the product info.
+ * Sends info to the front end.
  */
 @WebFilter(filterName = "ProcessFilter", urlPatterns = {"/widget.jsp"})
 public class ProcessFilter extends BaseFilter {
@@ -42,19 +42,23 @@ public class ProcessFilter extends BaseFilter {
             throws IOException, ServletException {
         String code = request.getParameter("code");
         Collection<Event> events;
-        if (StringUtils.isNotBlank(code)) {
-            EventProvider eventProvider = new FacebookEventProvider();
-            eventProvider.login(code);
-            events = eventProvider.getEvents();
+        try {
+            if (StringUtils.isNotBlank(code)) {
+                EventProvider eventProvider = new FacebookEventProvider();
+                eventProvider.login(code);
+                events = eventProvider.getEvents();
 
-            EventClassifier sec = new SolrEventClassifier();
-            sec.classify(events);
+                EventClassifier sec = new SolrEventClassifier();
+                sec.classify(events);
 
-            ItemProvider itemProvider = new BackcountryItemProvider();
-            itemProvider.getItems(events);
+                ItemProvider itemProvider = new BackcountryItemProvider();
+                itemProvider.getItems(events);
 
-            request.setAttribute("events", events);
+                request.setAttribute("events", events);
+            }
+            chain.doFilter(request, response);
+        }catch(Exception e){
+            response.sendRedirect(request.getContextPath() + "/index.jsp");
         }
-        chain.doFilter(request, response);
     }
 }
