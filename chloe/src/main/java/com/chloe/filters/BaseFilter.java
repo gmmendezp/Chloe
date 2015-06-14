@@ -9,8 +9,11 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-public abstract class CustomFilter implements Filter {
+/**
+ * Base filter to implement common functions
+ * 
+ */
+public abstract class BaseFilter implements Filter {
 
     private static final boolean debug = true;
 

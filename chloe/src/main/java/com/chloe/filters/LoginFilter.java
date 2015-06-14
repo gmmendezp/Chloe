@@ -9,11 +9,15 @@ import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+/**
+ * Filter to login on the social network
+ * 
+ */
 @WebFilter(filterName = "LoginFilter", urlPatterns = {"/index.jsp"})
-public class LoginFilter extends CustomFilter {
+public class LoginFilter extends BaseFilter {
 
     /**
-     *
+     * Calls the choosen social network login process
      * @param request The servlet request we are processing
      * @param response The servlet response we are creating
      * @param chain The filter chain we are processing

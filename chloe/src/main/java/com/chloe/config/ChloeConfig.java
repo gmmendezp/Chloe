@@ -32,6 +32,13 @@ public class ChloeConfig {
         return restTemplate;
     }
 
+    /**
+     * 
+     * Maps a json response to ObjectNode
+     * @param response json response
+     * @return ObjectNode
+     * @throws IOException 
+     */
     public ObjectNode getObjectMapper(String response) throws IOException {
         return new ObjectMapper().readValue(new JsonFactory().createJsonParser(response), ObjectNode.class);
     }

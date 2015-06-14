@@ -11,6 +11,11 @@ import com.restfb.scope.ScopeBuilder;
 import java.util.ArrayList;
 import java.util.Collection;
 
+/**
+ * Facebook event provider
+ * Performs the login steps for obtaining permissions to facebook
+ * Obtains facebook events of an user
+ */
 public class FacebookEventProvider implements EventProvider {
 
     private String token;
@@ -20,6 +25,10 @@ public class FacebookEventProvider implements EventProvider {
             Version.VERSION_2_3);
     private String redirectUri = "http://localhost:8084/" + "chloe" + "/widget.jsp";
 
+    /**
+     * Obtains the facebook login url
+     * @return facebook login url
+     */
     @Override
     public String getLoginUrl() {
         ScopeBuilder scopeBuilder = new ScopeBuilder();
@@ -29,6 +38,10 @@ public class FacebookEventProvider implements EventProvider {
         return facebookUrl;
     }
 
+    /**
+     * Code returned from the login url for permissions
+     * @param code verification code
+     */
     @Override
     public void login(String code) {
         AccessToken accessToken = facebookClient.obtainUserAccessToken(appId, appSecret, redirectUri, code);
@@ -36,6 +49,10 @@ public class FacebookEventProvider implements EventProvider {
         facebookClient = new DefaultFacebookClient(token, appSecret, Version.VERSION_2_3);
     }
 
+    /**
+     * Retrieves the list of events from a facebook user
+     * @return events list
+     */
     @Override
     public Collection<Event> getEvents() {
         Collection<Event> events = new ArrayList<Event>();

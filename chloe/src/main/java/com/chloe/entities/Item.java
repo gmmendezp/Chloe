@@ -3,6 +3,10 @@ package com.chloe.entities;
 import java.util.Iterator;
 import org.codehaus.jackson.JsonNode;
 
+/**
+ * 
+ * Represents a product from the store
+ */
 public class Item {
 
     private String id;

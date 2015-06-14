@@ -17,9 +17,18 @@ import org.apache.commons.lang3.StringUtils;
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.node.ObjectNode;
 import org.springframework.web.client.RestTemplate;
-
+/**
+ *
+ * BackCountry item/product provider
+ * Obtains product info from backcountry's API
+ */
 public class BackcountryItemProvider implements ItemProvider {
 
+    /**
+     * Hydrates the events with the item/product information, obtained from
+     * backcountry's API
+     * @param events events from a social network or any other source
+     */
     @Override
     public void getItems(Collection<Event> events) {
         RestTemplate rt = ChloeConfig.getInstance().getRestTemplate();
@@ -41,6 +50,11 @@ public class BackcountryItemProvider implements ItemProvider {
         }
     }
 
+    /**
+     * Parses the response from the API to obtain the items information
+     * @param itemsJson json response of the API
+     * @param items items obtained from an event, only item.id is necessary
+     */
     private void getItemsFromJson(String itemsJson, Map<String, Item> items) {
         try {
             ObjectNode jsonObject = ChloeConfig.getInstance().getObjectMapper(itemsJson);

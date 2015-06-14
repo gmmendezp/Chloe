@@ -15,12 +15,22 @@ import org.apache.commons.lang3.StringUtils;
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.node.ObjectNode;
 
+/**
+ *
+ * Solr event classifier
+ * An external app to hydrate the solr index would be optimal for 
+ * better classification
+ */
 public class SolrEventClassifier implements EventClassifier {
 
     private static final String OR = " OR ";
     private static final String ACTIVITIES_FIELD = "activities:{keyword}";
     private static final String URL = "http://54.152.144.85:8983/solr/chloe-index/select?q={query}&wt=json&indent=true";
 
+    /**
+     * Uses solr to hydrate events with product ids
+     * @param events 
+     */
     @Override
     public void classify(Collection<Event> events) {
         for (Event event : events) {
@@ -54,6 +64,11 @@ public class SolrEventClassifier implements EventClassifier {
         return builder.toString();
     }
 
+    /**
+     * Parses the json obtained from solr
+     * @param resultString response from solr
+     * @return
+     */
     public Set<Item> processClassifierResult(String resultString) {
         try {
             ObjectNode jsonObject = ChloeConfig.getInstance().getObjectMapper(resultString);

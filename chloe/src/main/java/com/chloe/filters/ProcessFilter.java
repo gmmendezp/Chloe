@@ -16,11 +16,19 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang3.StringUtils;
 
+/**
+ * Manages the workflow of the app:
+ * 1. Receives a verification code/token from the social network
+ * 2. Calls the event provider to obtain user events
+ * 3. Calls the classifier to obtain product ids according to the events
+ * 4. Calls the item/product provider to obtain the product info
+ * 5. Sends info to the front end
+ */
 @WebFilter(filterName = "ProcessFilter", urlPatterns = {"/widget.jsp"})
-public class ProcessFilter extends CustomFilter {
+public class ProcessFilter extends BaseFilter {
 
     /**
-     *
+     * 
      * @param request The servlet request we are processing
      * @param response The servlet response we are creating
      * @param chain The filter chain we are processing
