@@ -9,7 +9,7 @@ import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@WebFilter(filterName = "LoginFilter", urlPatterns = {"/login"})
+@WebFilter(filterName = "LoginFilter", urlPatterns = {"/index.jsp"})
 public class LoginFilter extends CustomFilter {
 
     /**
