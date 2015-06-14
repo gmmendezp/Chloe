@@ -75,3 +75,15 @@ html, body{
 .listPriceSale{
     text-decoration: line-through;
 }
+productContainer{
+    color: white;
+}
+
+a{
+    color: #222;
+    text-decoration: none;
+}
+
+a{
+    color: #222;
+}

@@ -14,6 +14,8 @@ public class Item {
     private Double salePrice;
     private boolean onSale;
     private String price;
+    private String url;
+    private int[] rate;
 
     public Item(String id) {
         this.id = id;
@@ -45,12 +47,32 @@ public class Item {
                     price = "$" + listPrice + " - " + "$" + salePrice;
                 }
 
+                url = sku.get("url").getTextValue();
+                
+                
+                
                 if (sku.get("image") != null) {
                     image = sku.get("image").get("url").getTextValue();
                     break;
                 }
             }
         }
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public int[] getRate() {
+        return rate;
+    }
+
+    public void setRate(int[] rate) {
+        this.rate = rate;
     }
 
     public String getPrice() {
@@ -127,6 +149,7 @@ public class Item {
 
     @Override
     public String toString() {
-        return "Item{" + "id=" + id + ", title=" + title + ", description=" + description + ", brand=" + brand + ", image=" + image + ", listPrice=" + listPrice + ", salePrice=" + salePrice + ", onSale=" + onSale + ", price=" + price + '}';
+        return "Item{" + "id=" + id + ", title=" + title + ", description=" + description + ", brand=" + brand + ", image=" + image + ", listPrice=" + listPrice + ", salePrice=" + salePrice + ", onSale=" + onSale + ", price=" + price + ", url=" + url + ", rate=" + rate + '}';
     }
+
 }
