@@ -9,9 +9,9 @@ import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@WebFilter(filterName = "LoginFilter", urlPatterns = {"/login"})
+@WebFilter(filterName = "LoginFilter", urlPatterns = {"/index.jsp"})
 public class LoginFilter extends CustomFilter {
-    
+
     /**
      *
      * @param request The servlet request we are processing
@@ -29,5 +29,4 @@ public class LoginFilter extends CustomFilter {
         String loginUrl = eventProvider.getLoginUrl();
         response.sendRedirect(loginUrl);
     }
-    
 }
