@@ -32,7 +32,7 @@ public class SolrEventClassifier implements EventClassifier {
                 if (!StringUtils.isBlank(eventName)) {
                     String[] tokensArray = StringUtils.split(eventName, " ");
                     Set<String> tokens = new HashSet<String>();
-                    for(String t : tokensArray) {
+                    for (String t : tokensArray) {
                         tokens.add(URLEncoder.encode(t, "UTF-8"));
                     }
                     String preparedUrl = URL.replaceAll("\\{query\\}", generateEventQuery(tokens));

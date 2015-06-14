@@ -1,3 +1,7 @@
+html, body{
+    background: #FEFEFE;
+}
+
 .mainBanner{
     text-align: center;
     color: #222;
@@ -21,11 +25,34 @@
     width: 200px;
     display: inline-block;   
     margin: 0px 8px;
+    padding: 5px;
+    cursor: pointer;
+    transition: 0.5s box-shadow ease;
+    border-radius: 3px;
+}
+
+.product:hover{
+    box-shadow: 0px 0px 2px 1px #999, 0px 0px 5px 2px #FFF;
+}
+
+.product .event_name{
+}
+.productContainer .event_name_val{
+    font-style: italic;
+    color: royalblue;
+}
+
+.product .product_images{
+    clear: both;
+}
+
+.product .event_promo{
+    margin-bottom: 10px;
 }
 
 .product img{
     height: 200px;
-    width: 200px;
+    width: 198px;
     margin-bottom: 10px;
 }
 .product_brand{
@@ -35,4 +62,16 @@
 }
 .product_title{
     font-size: 14px;
+    margin-bottom: 10px;
+}
+
+.product_price{
+}
+
+.salePrice{
+    color: orange;
+}
+
+.listPriceSale{
+    text-decoration: line-through;
 }

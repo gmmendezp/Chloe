@@ -10,6 +10,10 @@ public class Item {
     private String description;
     private String brand;
     private String image;
+    private Double listPrice;
+    private Double salePrice;
+    private boolean onSale;
+    private String price;
 
     public Item(String id) {
         this.id = id;
@@ -27,12 +31,58 @@ public class Item {
             for (Iterator<JsonNode> it = itemJson.get("skus").iterator(); it.hasNext();) {
                 JsonNode sku = it.next();
 
+                if (sku.get("onSale") != null) {
+                    onSale = sku.get("onSale").getBooleanValue();
+                }
+                listPrice = sku.get("listPrice").getDoubleValue();
+                salePrice = sku.get("salePrice").getDoubleValue();
+
+                if (listPrice.equals(salePrice)) {
+                    price = "$" + listPrice;
+                } else if (onSale) {
+                    price = "<span class='salePrice'>sale $" + salePrice + "</span> <span class='listPriceSale'>" + "$" + listPrice + "</span>";
+                } else {
+                    price = "$" + listPrice + " - " + "$" + salePrice;
+                }
+
                 if (sku.get("image") != null) {
                     image = sku.get("image").get("url").getTextValue();
                     break;
                 }
             }
         }
+    }
+
+    public String getPrice() {
+        return price;
+    }
+
+    public void setPrice(String price) {
+        this.price = price;
+    }
+
+    public boolean isOnSale() {
+        return onSale;
+    }
+
+    public void setOnSale(boolean onSale) {
+        this.onSale = onSale;
+    }
+
+    public Double getListPrice() {
+        return listPrice;
+    }
+
+    public void setListPrice(Double listPrice) {
+        this.listPrice = listPrice;
+    }
+
+    public Double getSalePrice() {
+        return salePrice;
+    }
+
+    public void setSalePrice(Double salePrice) {
+        this.salePrice = salePrice;
     }
 
     public String getImage() {
@@ -77,7 +127,7 @@ public class Item {
 
     @Override
     public String toString() {
-        return "Item{" + "id=" + id + ", title=" + title + ", description=" + description + ", brand=" + brand + ", image=" + image + '}';
+        return "Item{" + "id=" + id + ", title=" + title + ", description=" + description + ", brand=" + brand + ", image=" + image + ", listPrice=" + listPrice + ", salePrice=" + salePrice + ", onSale=" + onSale + ", price=" + price + '}';
     }
 
 }
