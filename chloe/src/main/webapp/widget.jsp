@@ -15,9 +15,9 @@
         <title>JSP Page</title>
     </head>
     <body>
-
+        <div class="spacer"></div>
         <br/>
-        <div class="mainBanner">Products Recommended for You</div>
+        <div class="mainBanner">Recommended Products for You</div>
         <div class="productContainer">
             <c:forEach var="event" items="${events}">    
 

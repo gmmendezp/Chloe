@@ -2,6 +2,15 @@ html, body{
     background: #FEFEFE;
 }
 
+body{
+    margin: 0px;
+    background-image: url('../images/hack.png');
+    background-repeat: no-repeat;
+}
+.spacer{
+    height: 680px;
+}
+
 .mainBanner{
     text-align: center;
     color: #222;
